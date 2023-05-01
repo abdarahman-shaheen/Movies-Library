@@ -27,13 +27,11 @@ server.listen(PORT,()=>{
         res.send("Welcome to Favorite Page")
     })
 
-
+    server.get('/500',(req,res)=>{
+        let obj={"status":500,"responseText":"Sorry, something went wrong"};
+        res.status(500).send(obj);
+    })
 
     server.get("*",(req,res)=>{
         res.status(404).send("page not found");
-    })
-
-    server.get('/error 500',(req,res)=>{
-        let obj={"status":500,"responseText":"Sorry, something went wrong"};
-        res.status(500).send(obj);
     })
