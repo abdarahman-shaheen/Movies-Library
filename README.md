@@ -19,9 +19,12 @@
 ## Getting Started
 
 1. clone this repository;
-2. run command "npm start" in terminal;
-3. go browser and write url "localhost:3000".
-4. add any path in project features (localhost:3000/path) to show the pages.
+2. run command "npm i" to install all package in dependencies .
+3. create file (.env) same data information in file (env.sample).
+4. add you api_key.
+5. run command "npm start" in terminal;
+5. go browser and write url "localhost:3000".
+6. add any path in project features (localhost:3000/path) to show the pages.
 
 ## Project Features
 
