@@ -23,8 +23,8 @@
 3. create file (.env) same data information in file (env.sample).
 4. add you api_key.
 5. run command "npm start" in terminal;
-5. go browser and write url "localhost:3000".
-6. add any path in project features (localhost:3000/path) to show the pages.
+6. go browser and write url "localhost:3000".
+7. add any path in project features (localhost:3000/path) to show the pages.
 
 ## Project Features
 
