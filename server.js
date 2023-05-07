@@ -5,26 +5,35 @@ const dataMovie = require("./Movie Data/data.json");
 server.use(cors());
 require('dotenv').config();
 const axios = require('axios');
+const pg = require("pg")
+
 const apiKey=process.env.api_key;
 const PORT = 3000;
 let movies = [];
 
-console.log("this "+" " +apiKey);
+// console.log("this "+" " +apiKey);
 
 
 // let movie1 = new Format(datas.title, datas.poster_path, datas.overview);
 
+const client = new pg.Client('postgresql://localhost:5432/movies')
+
+server.use(express.json())
+
 server.get("/", homePage);
-
-server.get("/trending",trending);
-server.get("/search",search);
-server.get("/discover",discover);
-server.get("/watch",watch)
 server.get("/favorite",favoritePage);
+server.get("/trending",trending);
+server.get("/discover",discover);
+server.get("/search",search);
+server.get("/watch",watch)
 
+server.get("/getMovies",getMovies)
+server.post("/addMovies",addMovies)
 server.get("/500", handlerError500);
-
 server.get("*", handlerDefaultErro);
+server.use(errorHandler);
+
+
 
 function homePage(req,res){
     let singleMovie = new Format(dataMovie.title, dataMovie.poster_path, dataMovie.overview);
@@ -119,6 +128,37 @@ function watch(req,res){
         errorHandler(error,req,res)
     }
 }
+function addMovies(req,res){
+    try {
+            const movie = req.body;
+    // console.log(movie);
+    const sql =`INSERT INTO infoMovies(title,overView) 
+    VALUES($1,$2);`
+     const values=[movie.title,movie.overView];
+     client.query(sql,values)
+     .then(data=>{
+        res.send("tha movie is added")
+     })
+     .catch((error)=>errorHandler(error,req,res));
+
+    } catch (error) {
+        errorHandler(error,req,res);
+        
+    }
+
+}
+
+function getMovies(req,res){
+try {
+      const sql=`SELECT * FROM infomovies`;
+    client.query(sql)
+    .then(data=>{res.send(data.rows)})
+    .catch(error=>errorHandler(error,req,res))
+} catch (error) {
+    errorHandler(error,req,res);
+}
+  
+}
 
 function handlerError500(req,res){
     let obj = { status: 500, responseText: "Sorry, something went wrong" };
@@ -145,6 +185,9 @@ function Format(id,title, release_date,poster_path, overview) {
   movies.push(this);
 }
 
-server.listen(PORT, () => {
-    console.log("hays" + PORT);
-  });
+client.connect().then(()=>{
+    server.listen(PORT, () => {
+        console.log("Welcome on my host:" + PORT);
+      });
+})
+

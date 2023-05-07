@@ -4,17 +4,19 @@
 
 ## WRRC
 
-!["img wrrc"](./assets/APi.png)
+!["img wrrc"](./assets//wrrc%20database.png)
 
 ## Overview
 
- This page is movies libray , I used Api movies database from [The movie Database API](https://developers.themoviedb.org/3/getting-started/introduction).
+- This page is movies libray , I used Api movies database from [The movie Database API](https://developers.themoviedb.org/3/getting-started/introduction).
 
 ## Notes
 
 - I used Api for request and response in project.
 
 - I used  format clean code for my code.
+
+- I uesd postgres database server to storage my data movies .
 
 ## Getting Started
 
@@ -25,6 +27,10 @@
 5. run command "npm start" in terminal;
 6. go browser and write url "localhost:3000".
 7. add any path in project features (localhost:3000/path) to show the pages.
+
+## optional features
+
+1. you can add movies (path "/AddMovies") before that please use thunder Client or postmanto add data json, first select POST then go to body and add ( title and overview for movie) then send request.
 
 ## Project Features
 
@@ -39,3 +45,5 @@
 5. in page watch (path "/watch") you can show the request and response watch page from database api
 
 6. if you add any other path the error page not found is show .
+
+7. in page get movies (path /getMovies) you can show the movies it will be added.
