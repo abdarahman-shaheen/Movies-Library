@@ -27,12 +27,15 @@ server.get("/discover",discover);
 server.get("/search",search);
 server.get("/watch",watch)
 
+
+server.get("/getMovies/movie",getSpecificMovies) //you should add query parmeter id(/getmovies/movie?id=<<id>>)
 server.get("/getMovies",getMovies)
 server.post("/addMovies",addMovies)
+server.put("/updateMovies/:id",updateMovie);
+server.delete("/deleteMovies/:id",deleteMovie);
 server.get("/500", handlerError500);
 server.get("*", handlerDefaultErro);
-server.use(errorHandler);
-
+// server.use(errorHandler);
 
 
 function homePage(req,res){
@@ -147,7 +150,6 @@ function addMovies(req,res){
     }
 
 }
-
 function getMovies(req,res){
 try {
       const sql=`SELECT * FROM infomovies`;
@@ -158,6 +160,56 @@ try {
     errorHandler(error,req,res);
 }
   
+}
+function getSpecificMovies(req,res){
+    try {
+        const {id} = req.query;
+          const sql=`SELECT * FROM infomovies where id=${id}`;
+        client.query(sql)
+        .then(data=>{res.send(data.rows)})
+        .catch(error=>errorHandler(error,req,res))
+    } catch (error) {
+        errorHandler(error,req,res);
+    }
+      
+}
+
+function deleteMovie(req,res){
+    try {
+        const {id} = req.params;
+const sql =`delete from infoMovies where id=${id}`;
+client.query(sql)
+.then(data=>{
+    res.status(200).send("the movie is deleted")
+})
+.catch((error)=>{
+    errorHandler(error,req,res);
+})
+
+    } catch (error) {
+        errorHandler(error,req,res);
+
+    }
+
+}
+
+function updateMovie(req,res){
+    try {
+        const {id} = req.params;
+const {title}=req.body;
+const sql=`UPDATE infoMovies set title=$1 where id=${id} `;
+const value =[title];
+client.query(sql,value)
+.then(data=>{
+    res.status(201).send("update data succesfuly");
+})
+.catch((error)=>{
+    errorHandler(error,req,res);
+})
+    } catch (error) {
+        errorHandler(error,req,res);
+    }
+
 }
 
 function handlerError500(req,res){
@@ -184,6 +236,7 @@ function Format(id,title, release_date,poster_path, overview) {
   this.overview = overview;
   movies.push(this);
 }
+
 
 client.connect().then(()=>{
     server.listen(PORT, () => {
