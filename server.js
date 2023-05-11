@@ -132,9 +132,9 @@ function addMovies(req,res){
     try {
             const movie = req.body;
     // console.log(movie);
-    const sql =`INSERT INTO infoMovies(title,overView) 
-    VALUES($1,$2);`
-     const values=[movie.title,movie.overView];
+    const sql =`INSERT INTO infoMovies(title,overView,poster_path) 
+    VALUES($1,$2,$3);`
+     const values=[movie.title,movie.overView,movie.poster_path];
      client.query(sql,values)
      .then(data=>{
         res.send("tha movie is added")
