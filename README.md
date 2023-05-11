@@ -4,7 +4,7 @@
 
 ## WRRC
 
-!["img wrrc"](./assets//wrrc%20database.png)
+!["img wrrc"](./assets/wrrc%20dbms.png)
 
 ## Overview
 
