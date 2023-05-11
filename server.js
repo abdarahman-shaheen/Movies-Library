@@ -8,7 +8,8 @@ const axios = require('axios');
 const pg = require("pg")
 
 const apiKey=process.env.api_key;
-const PORT = 3000;
+const PORT = process.env.PORT||3000;
+const DATABASE_URL=process.env.DATABASE_URL;
 let movies = [];
 
 // console.log("this "+" " +apiKey);
@@ -16,7 +17,7 @@ let movies = [];
 
 // let movie1 = new Format(datas.title, datas.poster_path, datas.overview);
 
-const client = new pg.Client('postgresql://localhost:5432/movies')
+const client = new pg.Client(`${DATABASE_URL}`)
 
 server.use(express.json())
 
@@ -26,8 +27,6 @@ server.get("/trending",trending);
 server.get("/discover",discover);
 server.get("/search",search);
 server.get("/watch",watch)
-
-
 server.get("/getMovies/movie",getSpecificMovies) //you should add query parmeter id(/getmovies/movie?id=<<id>>)
 server.get("/getMovies",getMovies)
 server.post("/addMovies",addMovies)
@@ -36,8 +35,6 @@ server.delete("/deleteMovies/:id",deleteMovie);
 server.get("/500", handlerError500);
 server.get("*", handlerDefaultErro);
 // server.use(errorHandler);
-
-
 function homePage(req,res){
     let singleMovie = new Format(dataMovie.title, dataMovie.poster_path, dataMovie.overview);
     // let mapResult = dataMovie.map(item => {
