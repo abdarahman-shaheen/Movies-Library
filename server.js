@@ -8,7 +8,7 @@ const axios = require('axios');
 const pg = require("pg")
 
 const apiKey=process.env.api_key;
-const PORT = process.env.PORT||3000;
+const PORT = process.env.PORT||3001;
 const DATABASE_URL=process.env.DATABASE_URL;
 let movies = [];
 
@@ -20,7 +20,6 @@ let movies = [];
 const client = new pg.Client(`${DATABASE_URL}`)
 
 server.use(express.json())
-
 server.get("/", homePage);
 server.get("/favorite",favoritePage);
 server.get("/trending",trending);
@@ -131,10 +130,10 @@ function watch(req,res){
 function addMovies(req,res){
     try {
             const movie = req.body;
-    // console.log(movie);
-    const sql =`INSERT INTO infoMovies(title,overView,poster_path) 
-    VALUES($1,$2,$3);`
-     const values=[movie.title,movie.overView,movie.poster_path];
+    console.log(movie);
+    const sql =`INSERT INTO infoMovies(id,title,overview,poster_path,comment) 
+    VALUES($1,$2,$3,$4,$5);`
+     const values=[movie.id,movie.title,movie.overview,movie.poster_path,movie.comment];
      client.query(sql,values)
      .then(data=>{
         res.send("tha movie is added")
@@ -193,12 +192,17 @@ client.query(sql)
 function updateMovie(req,res){
     try {
         const {id} = req.params;
-const {title}=req.body;
-const sql=`UPDATE infoMovies set title=$1 where id=${id} `;
-const value =[title];
+const comment=req.body.comment;
+const title = req.body.title;
+const movie=req.body;
+console.log(req.body);
+
+const sql=`UPDATE infoMovies set title=$1, overview=$2,poster_path= $3 , comment=$4 where id=${id} `;
+const value =[movie.title,movie.overview,movie.poster_path,movie.comment];
 client.query(sql,value)
 .then(data=>{
-    res.status(201).send("update data succesfuly");
+    res.status(201).send("update data successfuly");
+    
 })
 .catch((error)=>{
     errorHandler(error,req,res);
