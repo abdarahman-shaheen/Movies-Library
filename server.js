@@ -192,17 +192,23 @@ client.query(sql)
 function updateMovie(req,res){
     try {
         const {id} = req.params;
-const comment=req.body.comment;
-const title = req.body.title;
+// const comment=req.body.comment;
+// const title = req.body.title;
 const movie=req.body;
 console.log(req.body);
 
-const sql=`UPDATE infoMovies set title=$1, overview=$2,poster_path= $3 , comment=$4 where id=${id} `;
+const sql=`UPDATE infoMovies set title=$1, overview=$2,poster_path= $3 , comment=$4 where id=${id} RETURNING *;  `;
 const value =[movie.title,movie.overview,movie.poster_path,movie.comment];
 client.query(sql,value)
-.then(data=>{
-    res.status(201).send("update data successfuly");
-    
+.then(data => {
+    const sql = `SELECT * FROM infoMovies;`;
+    client.query(sql)
+        .then(allData => {
+            res.send(allData.rows)
+        })
+        .catch((error) => {
+            errorHandler(error, req, res)
+        })
 })
 .catch((error)=>{
     errorHandler(error,req,res);
