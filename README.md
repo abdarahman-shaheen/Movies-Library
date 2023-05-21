@@ -32,11 +32,19 @@
 
 1. you can add movies (path "/AddMovies") before that please use thunder Client or postmanto add data json, first select POST then go to body and add ( title and overview for movie) then send request.
 
+2. you can update movies (path "//updateMovies/:id") before that please use thunder Client or postmanto add data json, first select PUT then go to body and add ( title and overview for movie) then send request.
+Note: don't forget add the id .
+
+3. you can delete movies (path "/deleteMovies/:id").
+Note: don't forget add the id .
+
 ## Project Features
 
 1. in home page (path "/") you can show the movies(title and poster and overview),
+ and you can add the movies to favorite with comment.
 
-2. in favorite page (path "/favorite") you can show the favorite movies.
+2. in favorite page (path "/favorite") you can show the favorite movies,
+ and you can update and delete your comment.
 
 3. in page trending (path "/trending") you can show the request and response  trending page from database api;
 
